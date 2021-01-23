@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static "accounts/signup.css" %}" />
+{% endblock %}
+
+
+
+{% block content %}
+
+    <main>
+        <section class="signup">
+            <h1>Sign Up</h1>
+            <form class="rform" method="POST">
+                 {% csrf_token %}
+                 <div> <p>{{ form.username.label }} :
+                        {{form.username}} </p></div>
+                 <div><p>  {{form.email.label}} : 
+                        {{form.email}} </p></div>
+                 <div> <p> {{form.password1.label}} : 
+                        {{form.password1}}</p> </div>
+                 <div><p>  {{form.password2.label}} : 
+                        {{form.password2}}</p> </div>
+                 <div><input type="submit"  value="SignUp"> </div>
+            </form>
+        </section>
+    </main>
+
+    <div class="wrapper animated bounceInLeft">
+        
+
+    </div>
+</div>
+{% endblock %}

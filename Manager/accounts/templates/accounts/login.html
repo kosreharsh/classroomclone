@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% block style %}
+    <link rel="stylesheet" href="{% static "accounts/login.css" %}" />
+{% endblock %}
+{% block content %}
+    <section >
+        <div class="login">
+            <h1 style="text-align: center;">Log In</h1>
+        <form  class="lf"method="POST" >
+            {% csrf_token %}
+           
+            {{ form.as_p }}
+        
+            <input type="submit" value="Log In">
+        </form>
+    </div>
+    </section>
+{% endblock %}
