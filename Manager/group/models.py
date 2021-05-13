@@ -18,26 +18,25 @@ register = template.Library()
 
 class Group(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    slug = models.SlugField(allow_unicode=True, unique=True)
-    code = models.CharField(max_length=8)
+    slug = models.SlugField(blank=True,null=True)
+    code = models.CharField(max_length=8,blank=True,null=True)
     description = models.TextField(blank=True, default='')
     members = models.ManyToManyField(User,through="GroupMember")
-    creator = models.CharField(max_length=255)
+    creator = models.ForeignKey(User,related_name="group_creator",on_delete=models.CASCADE)
+    
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs): 
         self.slug = slugify(self.name)
-        self.code = ran_code(8)
-        
-        super().save(*args, **kwargs)
+        if self.code == None:
+            self.code = ran_code(8)
+        super(Group,self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse("group:class_single", kwargs={"slug": self.slug})
 
-
-    class Meta:
-        ordering = ["name"]
+    
 
 
 class GroupMember(models.Model):

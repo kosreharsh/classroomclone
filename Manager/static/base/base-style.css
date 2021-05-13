@@ -1,19 +1,20 @@
-*{
+ /* *{
     margin: 0;
     top: 0;
     left: 0;
     box-sizing: border-box;
     font-family: 'Kufam', cursive;
-}
+}  */
 
-nav{
+/* nav{
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: cadetblue;
     height: 2.5rem;
+    flex-direction: row;
     
-}
+} */
 .logo a{
     font-weight: bold;
     color: cornsilk;

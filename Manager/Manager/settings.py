@@ -14,7 +14,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TEMPLATE_DIR = os.path.join( BASE_DIR, 'templates')
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'group',
     'accounts',
     'post',
+    'quiz',
+    'assignment',
+    'debug_toolbar',
     'crispy_forms',
     'livereload',
 ]
@@ -52,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'Manager.urls'
@@ -59,7 +63,7 @@ ROOT_URLCONF = 'Manager.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ TEMPLATE_DIR, ],
+        'DIRS': [TEMPLATE_DIR, ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -108,6 +112,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+INTERNAL_IPS = [
+    # ...
+    '127.0.0.1',
+    # ...
+]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -128,9 +138,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = 'staticfiles'
-STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static') ,]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CRISPY_TEMPLATE_PACK = 'uni_form'
 LOGIN_URL = '/accounts/login/'
 
-LOGIN_REDIRECT_URL = 'base1'
+LOGIN_REDIRECT_URL = 'group:base1'
 LOGOUT_REDIRECT_URL = 'landing-page'

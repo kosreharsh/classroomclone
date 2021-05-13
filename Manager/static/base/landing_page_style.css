@@ -9,7 +9,7 @@ nav{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: cadetblue;
+    background-color: rgb(205, 245, 247);
     height: 2.5rem;
     
 }
@@ -30,8 +30,8 @@ nav{
    letter-spacing: 4px;
    font-size: 1.2rem;
 }
-section{
-    background-color:#7FFFD4;
+.s{
+    background-color:#f0f5f3;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -69,7 +69,7 @@ section{
 }
 .create-box a {
     
-    background: cadetblue;
+    background: rgb(246, 250, 250);
     color: cornsilk;
     display: inline-block;
     font-size: 1em;
@@ -95,7 +95,7 @@ section{
     padding-bottom: 1rem;
 }
 .join-class a{
-    background: cadetblue;
+    background: rgb(224, 243, 243);
     color: cornsilk;
     display: inline-block;
     font-size: 1em;

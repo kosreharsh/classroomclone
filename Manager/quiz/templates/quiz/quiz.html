@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div id="vue-app">
+    <form @submit.prevent="handleSubmit()">
+        <div v-for="(question, index) in question_set" class='mt-2'>
+            <p class='mb-0'>[[index+1]]. [[question.question]] </p>
+            <div v-for="(option, i) in question.options" class="ms-3">
+                <input type="radio" v-on:change="checkanswer(index,i)" value="option" :name="'option-'+index">
+                [[option]]
+            </div>
+
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+{% endblock content %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script>
+    var app = new Vue({
+        delimiters: ["[[", "]]"],
+        el: '#vue-app',
+        data: {
+            message: 'Hello Vue!',
+            quizname: '{{quizname}}',
+            question_set: [],
+            total_mark: 0,
+        },
+        methods: {
+            handleSubmit() {
+                fetch(`/quiz/api/${this.quizname}/marks/`, {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        data: this.total_mark,
+                    })
+                })
+                    .then(res => res.json())
+                    .then(result => {
+                        console.log(result)
+                    })
+            },
+            checkanswer(question_index, option_index) {
+                var question = this.question_set[question_index]
+                if (Number(question.answer) == Number(option_index) + 1) {
+                    ++(this.total_mark);
+                }
+
+            }
+
+        },
+        mounted() {
+            fetch(`/quiz/api/${this.quizname}/`)
+                .then(res => res.json())
+                .then(result => {
+                    this.question_set = result;
+                    console.log(this.question_set);
+                })
+        }
+
+    })
+</script>
+{% endblock extra_scripts %}
