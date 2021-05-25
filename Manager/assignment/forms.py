@@ -1,11 +1,20 @@
 from django import forms
-from .models import Assignment,Response
+from .models import Assignment, ResponseFiles, AssignmentFiles
+
 
 class AssignmentForm(forms.ModelForm):
     class Meta:
-        fields = ('task','attachments','deadline')
         model = Assignment
+        fields = ('title', 'task', 'deadline')
+
+
+class AssignmentFilesForm(forms.ModelForm):
+    class Meta:
+        model = AssignmentFiles
+        fields = ('attachments',)
+
 
 class ResponseForm(forms.ModelForm):
     class Meta:
-        fields = ('responses')
+        model = ResponseFiles
+        fields = ('rfiles',)

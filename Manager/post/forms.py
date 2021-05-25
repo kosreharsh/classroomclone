@@ -4,20 +4,23 @@ from post import models
 
 
 class PostForm(forms.ModelForm):
-    message = forms.CharField(widget=forms.TextInput(attrs={
-        'class' : 'form-control', 
-        'row' : '2'
+    message = forms.CharField(label='', widget=forms.Textarea(attrs={
+        'class': 'form-control',
+        'rows': '2',
+        'placeholder': 'Share with your class'
     }))
+
     class Meta:
         fields = ['message']
         model = models.Post
 
-    # def __init__(self, *args, **kwargs):
-    #     user = kwargs.pop("user", None)
-    #     super().__init__(*args, **kwargs)
-    #     if user is not None:
-    #         self.fields["group"].queryset = (
-    #             models.Group.objects.filter(
-    #                 pk__in=user.groups.values_list("group__pk")
-    #             )
-    #         )
+
+class CommentForm(forms.ModelForm):
+    message = forms.CharField(widget=forms.Textarea(attrs={
+        'class': 'form-control',
+        'rows': '2'
+    }))
+
+    class Meta:
+        fields = ['message']
+        model = models.Comment

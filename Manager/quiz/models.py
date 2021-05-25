@@ -8,8 +8,12 @@ User = get_user_model()
 
 
 class QuizTest(models.Model):
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    group = models.ForeignKey(
+        Group, related_name="group_quiz", on_delete=models.CASCADE)
     quizname = models.CharField(max_length=150)
+    description = models.CharField(max_length=300, blank=True, null=True)
+    test_interval = models.IntegerField(null=True, blank=True)
+    test_starttime = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.quizname
@@ -34,3 +38,4 @@ class Question(models.Model):
     option2 = models.CharField(max_length=200)
     option3 = models.CharField(blank=True, max_length=200)
     option4 = models.CharField(blank=True, max_length=200)
+    marks = models.IntegerField(default=1)

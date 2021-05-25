@@ -1,30 +1,63 @@
 {% extends "group/group_base.html" %}
-
+{% load crispy_forms_tags %}
 
 {% block style %}
-	<style>
-		.arr{
-			display:flex;
-			justify-content: space-between;
-		}
-		.content{
-			display:flex;
-			justify-content: space-between;
-		}
-	</style>
-	
-{% endblock  %}
-	
+<style>
+	.arr {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.content {
+		display: flex;
+		justify-content: space-between;
+	}
+</style>
+
+{% endblock %}
+
 {% block pregroup %}
-<div class="arr">
-		<h2>{{group.name|title}}</h1>
-		<h3> Members : {{group.members.count}}</h3>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Create A MCQ-based Test</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="quiz-form">
+				<form action="{% url 'quiz:create_quiz' group.id %}" method="POST">
+					{{form.error}}
+					{% csrf_token %}
+					{{quizform|crispy}}
+
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<input type="submit" value="Create Test" class="btn btn-primary">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
 
 
-<div class="content">
+<div class="arr">
+	<h2>{{group.name|title}}</h1>
+		<h4> Members : {{group.members.count}}</h4>
+</div>
+
+
+<div class="content mb-4">
 
 	<h4>Group code : {{ group.code }}</h4>
+
+	{% if not user == group.creator %}
+
 	{% if user in group.members.all %}
 	<a href="{% url 'group:leave' slug=group.slug %}" class="btn btn-sm btn-fill btn-warning"><span
 			class="glyphicon glyphicon-remove-circle"></span> Leave</a>
@@ -32,6 +65,22 @@
 	<a href="{% url 'group:join' slug=group.slug %}" class="btn btn-sm btn-fill btn-warning"><span
 			class="glyphicon glyphicon-ok-circle"></span> Join</a>
 	{% endif %}
+
+	{% elif user == group.creator %}
+
+	<!-- Button trigger modal -->
+	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+		Create MCQ Test
+	</button>
+	<a type="button" href="{% url 'assignment:create-assignment' slug=group.slug %}" class="btn btn-primary">
+		Create assignment
+	</a>
+	{% endif %}
+
+
+
+
+
 
 
 
@@ -41,25 +90,41 @@
 
 
 {% block group_content %}
+<div class="row">
+	<div class="col-md-8 mt-5">
 
-<div class="col-md-8">
-	<div class="mt-4">
 		<form method="post">
 			{% csrf_token %}
-			{{ form.as_p}}
-			<input type="submit" class="btn btn-primary btn-sm" value="Post">
+			{{ postform.as_p}}
+			<input type="submit" class="btn btn-primary " value="Post">
 		</form>
+
+		{% if group.groups_posts.count == 0 %}
+		<h2>No posts in this group yet!</h2>
+
+		{% else %}
+
+		{% for post in group.group_posts.all %}
+		{% include "post/_post.html" %}
+		{% endfor %}
+
+		{% endif %}
 	</div>
-	{% if group.groups_posts.count == 0 %}
-	<h2>No posts in this group yet!</h2>
+	<div class="col-md-4">
 
-	{% else %}
+		{% if group.group_quiz.count == 0 %}
+		<p>No quiz available</p>
+		{% else %}
+		<div class="list-group ">
+			<p style="text-align: center;"><strong> Quiz Tests:</strong></p>
+			{% for quizes in group.group_quiz.all %}
+			<a href="{% url 'quiz:quiztest' quiz_id=quizes.id group_slug=group.slug %}"
+				class="list-group-item list-group-item-action">{{quizes.quizname}}</a>
+			{% endfor %}
+		</div>
+		{% endif %}
+	</div>
 
-	{% for post in group.group_posts.all %}
-	{% include "post/_post.html" %}
-	{% endfor %}
-
-	{% endif %}
 </div>
 
 {% endblock %}

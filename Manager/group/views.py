@@ -15,6 +15,7 @@ from post.forms import PostForm
 from .forms import JoinForm
 from post.models import Post
 from django.db.models import Q
+from quiz.forms import QuizForm
 
 
 class CreateGroup(LoginRequiredMixin, generic.CreateView):
@@ -44,7 +45,8 @@ class SingleClass(LoginRequiredMixin, generic.DetailView, FormMixin):
 
     def get_context_data(self, **kwargs):
         context = super(SingleClass, self).get_context_data(**kwargs)
-        context['form'] = PostForm()
+        context['postform'] = PostForm()
+        context['quizform'] = QuizForm()
         return context
 
     def post(self, request, *args, **kwargs):

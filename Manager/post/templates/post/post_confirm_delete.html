@@ -8,10 +8,10 @@
 	{% include "post/_post.html" with post=object hide_delete=True %}
 </div>
 
-<form method="POST">
+<form method="POST" class="mt-3">
 	{% csrf_token %}
 	<input type="submit" value="Confirm Delete" class="btn btn-danger btn-large">
-	<a href="{% url 'post:post_single' username=user.username pk=object.pk %}" class="btn btn-simple btn-large btn-default">Cancel</a>
+	<a href="{% url 'post:post_single'  pk=object.pk %}" class="btn btn-simple btn-large btn-default">Cancel</a>
 </form>
 
 {% endblock %}

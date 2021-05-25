@@ -25,6 +25,7 @@ urlpatterns = [
     path('', views.index, name="landing-page"),
     path('', include("group.urls", namespace="group")),
     path('quiz/', include("quiz.urls", namespace="quiz")),
+    path('task/', include("assignment.urls", namespace="assignment")),
     path('post/', include("post.urls", namespace="post")),
     path('accounts/', include("accounts.urls", namespace="accounts")),
     path('accounts/', include("django.contrib.auth.urls")),

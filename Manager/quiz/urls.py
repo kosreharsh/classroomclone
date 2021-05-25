@@ -3,8 +3,10 @@ from .views import *
 app_name = 'quiz'
 
 urlpatterns = [
-    path('<str:quizname>/', quiz_question, name='quiz_test'),
-    # path(/create_quiz/,,name='create_quiz'),
-    path('api/<str:quizname>/', api_for_quiz, name='quiz_test_api'),
-    path('api/<str:quizname>/marks/', api_for_quiz_mark, name='quiz_test_mark')
+    path('of/<slug:group_slug>/<int:quiz_id>/',
+         quiz_question, name='quiztest'),
+    path('create_quiz/<int:group_id>', create_quiz, name='create_quiz'),
+    path('add-question/<int:quiz_id>', add_question, name='add_question'),
+    path('api/<str:quizname>/', api_for_quiz, name='api_for_question'),
+    path('api/<int:quiz_id>/marks/', api_for_quiz_mark, name='quiz_test_mark')
 ]

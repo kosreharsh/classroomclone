@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'crispy_forms',
     'livereload',
+    'braces',
 ]
 
 MIDDLEWARE = [
@@ -143,7 +144,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-CRISPY_TEMPLATE_PACK = 'uni_form'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_URL = '/accounts/login/'
 
 LOGIN_REDIRECT_URL = 'group:base1'
