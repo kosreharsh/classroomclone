@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
-import debug_toolbar
+
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -27,12 +27,13 @@ urlpatterns = [
     path('quiz/', include("quiz.urls", namespace="quiz")),
     path('task/', include("assignment.urls", namespace="assignment")),
     path('post/', include("post.urls", namespace="post")),
+    path('todo/', include("todo.urls", namespace="todo")),
     path('accounts/', include("accounts.urls", namespace="accounts")),
     path('accounts/', include("django.contrib.auth.urls")),
 ]
 
 if settings.DEBUG:
-    urlpatterns += path('__debug__/', include(debug_toolbar.urls)),
+
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL,

@@ -6,6 +6,7 @@ from .forms import QuizForm, QuestionForm
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 from django.contrib.auth.models import User
+from django.contrib import messages
 
 
 @csrf_exempt
@@ -111,3 +112,16 @@ def create_quiz(request, group_id):
         instance.save()
         return redirect('quiz:add_question', quiz_id=instance.id)
     return reverse('group:class_single', kwargs={'slug': group.slug})
+
+
+def update_question(request, quiz_id, ques_id):
+    quiz = QuizTest.objects.get(id=quiz_id)
+    instance = Question.objects.get(id=ques_id)
+    form = QuestionForm(request.POST or None, instance=instance)
+    slug = quiz.group.slug
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Question updated")
+        return redirect('quiz:quiztest', quiz_id=quiz.id, group_slug=slug)
+    return render(request, 'add-question-page.html', {'form': form})

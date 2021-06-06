@@ -30,9 +30,11 @@ class ListGroup(LoginRequiredMixin, generic.ListView):
     model = Group
 
     def get(self, *args, **kwargs):
+        form = JoinForm()
         object_list = Group.objects.filter(
             Q(creator=self.request.user) | Q(members=self.request.user)).distinct()
-        context = {'object_list': object_list, 'allow_empty': True, }
+        context = {'object_list': object_list,
+                   'allow_empty': True, 'form': form}
         return render(self.request, 'group/group_list.html', context)
 
 
@@ -68,7 +70,7 @@ class SingleClass(LoginRequiredMixin, generic.DetailView, FormMixin):
 
 def Join(request):
     if request.method == 'GET':
-        form = JoinForm
+        form = JoinForm()
         context = {'form': form, }
         return render(request, 'group/join.html', context)
 

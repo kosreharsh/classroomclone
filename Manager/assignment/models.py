@@ -10,11 +10,11 @@ user = get_user_model()
 
 
 def task_directory_path(instance, filename):
-    return '{0}/{1}/{2}'.format(instance.group.slug, instance.title, filename)
+    return '{0}/{1}/{2}'.format(instance.assignment.group.slug, instance.assignment.title, filename)
 
 
 def response_directory_path(instance, filename):
-    return '{0}/Response/{1}'.format(instance.assignment.title, filename)
+    return '{0}/Response/{1}'.format(instance.response.assignment.title, filename)
 
 
 class Assignment(models.Model):
@@ -59,4 +59,4 @@ class ResponseFiles(models.Model):
         Response, related_name="response_file", on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.response.assignment.title
+        return self.response.student.username

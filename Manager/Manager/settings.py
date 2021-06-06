@@ -37,12 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'group',
     'accounts',
     'post',
     'quiz',
     'assignment',
-    'debug_toolbar',
+    'todo',
     'crispy_forms',
     'livereload',
     'braces',
@@ -56,7 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+
 ]
 
 ROOT_URLCONF = 'Manager.urls'
@@ -149,3 +150,9 @@ LOGIN_URL = '/accounts/login/'
 
 LOGIN_REDIRECT_URL = 'group:base1'
 LOGOUT_REDIRECT_URL = 'landing-page'
+
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

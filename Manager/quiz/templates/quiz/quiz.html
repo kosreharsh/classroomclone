@@ -2,25 +2,53 @@
 {% load staticfiles %}
 
 {% block content %}
-<h3>{{quiz.quizname}}</h3>
-<p>{{quiz.description}}</p>
-<button class="btn btn-warning" id="start-test" type="submit" onclick="quizstart()">Start Test</button>
-<div id="vue-app">
 
+<div class="row">
+    <div class="col-md-10 bshadow p-3">
+        <h3>{{quiz.quizname|title}}</h3>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Id architecto aliquid in repudiandae vitae eaque
+            deleniti optio vel praesentium rem quod, quisquam error pariatur, culpa fuga, laudantium voluptatibus animi
+            ipsa labore velit? Nostrum, deleniti tempore eaque incidunt placeat soluta, nemo in fugiat quos maiores
+            mollitia, nihil itaque natus nobis nam.</p>
+        {% if not quiz.description == None %}
+        <p>{{quiz.description}}</p>
+        {% endif %}
+        <button class="btn btn-warning px-3 mt-3" style="color:white;" id="start-test" type="submit"
+            onclick="quizstart()">Start
+            Test</button>
 
-    <form @submit.prevent.once="handleSubmit()" id="submit-form" style="display: none;">
-        <div v-for="(question, index) in question_set" class='mt-2'>
-            <p class='mb-0'>[[index+1]]. [[question.question]] </p>
-            <div v-for="(option, i) in question.options" class="ms-3">
-                <!-- v-on:change="checkanswer(index,i)" -->
-                <input type="radio" :value="option" :data-index="i" :name="'option-'+index">
-                [[option]]
-            </div>
+    </div>
 
-        </div>
-        <button type="submit" class="btn btn-primary mt-4">Submit</button>
-    </form>
 </div>
+
+<div class="row mt-3" id="rhide" style="display: none;">
+    <div class="col-md-10 bshadow p-3">
+        <div id="vue-app">
+            <form @submit.prevent.once="handleSubmit()" id="submit-form">
+                <div v-for="(question, index) in question_set" class='mt-2'>
+                    <p class='mb-0'>[[index+1]]. [[question.question]] </p>
+
+                    {% comment %}
+                    <a :data-ques-id=[[question.question_id]]
+                        href="'/update_question/quiz.id/' + [[question.question_id]] + '/'">update</a>
+
+                    {% endcomment %}
+
+                    <div v-for="(option, i) in question.options" class="ms-3">
+                        <!-- v-on:change="checkanswer(index,i)" -->
+                        <input type="radio" :value="option" :data-index="i" :name="'option-'+index">
+                        [[option]]
+                    </div>
+
+                </div>
+                <button type="submit" class="btn btn-primary mt-4">Submit</button>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+
 
 {% endblock content %}
 
@@ -35,7 +63,7 @@
     function quizstart() {
         var sbut = document.getElementById('start-test');
         sbut.style.display = 'none';
-        var disquestion = document.getElementById('submit-form');
+        var disquestion = document.getElementById('rhide');
         disquestion.style.removeProperty('display');
         setTimeout(quiztimer, 1000);
 

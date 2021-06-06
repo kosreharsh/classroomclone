@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import AssignmentForm, ResponseForm, AssignmentFilesForm
 from group.models import Group
+from .tasks import test, add_task_in_post
 # Create your views here.
 
 
@@ -36,27 +37,57 @@ def create_assignment(request, slug):
     group = Group.objects.filter(slug=slug)[0]
     if request.method == 'POST':
         form = AssignmentForm(request.POST)
-        filesform = AssignmentFilesForm(request.POST, request.FILES)
         if form.is_valid():
+            form.save(commit=False)
             form.instance.group = group
             form.save()
-            return reverse('group:class_single', kwargs={'slug': group.slug})
+            aslug = form.instance.slug
+            print(form.instance.group.name)
+            add_task_in_post.delay(request.user.username,
+                                   form.instance.id, form.instance.group.id)
+            return redirect('assignment:assignment-detail', slug=aslug)
     context['assignment_form'] = AssignmentForm()
-    context['filesform'] = AssignmentFilesForm()
+
     return render(request, "create-assignment.html", context)
 
 
 def assignment_detail(request, slug):
+
     assignment = Assignment.objects.filter(slug=slug)[0]
-    form = ResponseForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        messages.success(request, "Assignment has been Successfully Added")
-        return render(request, "assignment_detail.html", {})
+    responseform = ResponseForm()
+    assignmentform = AssignmentFilesForm()
+
+    if request.method == 'POST':
+        if 'response-form' in request.POST:
+            form = ResponseForm(request.POST, request.FILES)
+            if form.is_valid():
+                response = Response.objects.create(
+                    student=request.user, assignment=assignment)
+                form.save(commit=False)
+                form.instance.response = response
+                form.save()
+                messages.success(
+                    request, "Assignment has been Successfully Added")
+                return redirect('assignment:assignment-detail', slug=assignment.slug)
+        if 'attachments' in request.POST:
+            form = AssignmentFilesForm(request.POST, request.FILES)
+            if form.is_valid():
+                form.save(commit=False)
+                form.instance.assignment = assignment
+                form.save()
+                messages.success(
+                    request, "Attachments has been Successfully Added")
+                return redirect('assignment:assignment-detail', slug=assignment.slug)
 
     context = {
-        'object': assignment,
-        'form': form,
+        'assignment': assignment,
+        'responseform': responseform,
+        'assignmentform': assignmentform,
     }
 
     return render(request, 'assignment-detail.html', context)
+
+
+def celery_test(request):
+    test.delay(10)
+    return HttpResponse("Celery Works")

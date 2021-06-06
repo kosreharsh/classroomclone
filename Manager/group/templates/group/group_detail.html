@@ -3,14 +3,8 @@
 
 {% block style %}
 <style>
-	.arr {
-		display: flex;
-		justify-content: space-between;
-	}
-
-	.content {
-		display: flex;
-		justify-content: space-between;
+	.form-control {
+		border: 2px inset #ced4da;
 	}
 </style>
 
@@ -45,46 +39,57 @@
 	</div>
 </div>
 
+<!-- <div class="row" style="box-shadow: 1px 1px 3px #888888;">
+	<h2></h2>
+</div> -->
+<div class="accordion" id="GroupDescription">
+	<div class="accordion-item">
+		<h1 class="accordion-header" id="headingOne">
 
-<div class="arr">
-	<h2>{{group.name|title}}</h1>
-		<h4> Members : {{group.members.count}}</h4>
+			<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+				aria-expanded="false" aria-controls="collapseOne">
+				<strong>{{group.name|title}}</strong>
+			</button>
+		</h1>
+		<div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne"
+			data-bs-parent="#GroupDescription">
+			<div class="accordion-body ">
+				<p>{{group.description}}</p>
+				<p>Members : {{group.members.count}}</p>
+				<h6>Group code : {{ group.code }}</h6>
+				{% if user in group.members.all %}
+				<a href="{% url 'group:leave' slug=group.slug %}" class="btn  btn-warning float-end px-5">Leave</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
 </div>
+{% if user == group.creator %}
+<div class="row justify-content-start my-3">
+	<div class="col-md-2">
+		<a type="button" href="{% url 'assignment:create-assignment' slug=group.slug %}"
+			class="btn btn-outline-secondary">
+			Create assignment
+		</a>
+	</div>
+	<div class="col-md-2">
+		<!-- Button trigger modal -->
+		<button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+			Create MCQ Test
+		</button>
+	</div>
+</div>
+{% endif %}
 
-
-<div class="content mb-4">
-
-	<h4>Group code : {{ group.code }}</h4>
+<div class="row my-2">
 
 	{% if not user == group.creator %}
-
-	{% if user in group.members.all %}
-	<a href="{% url 'group:leave' slug=group.slug %}" class="btn btn-sm btn-fill btn-warning"><span
-			class="glyphicon glyphicon-remove-circle"></span> Leave</a>
-	{% else %}
-	<a href="{% url 'group:join' slug=group.slug %}" class="btn btn-sm btn-fill btn-warning"><span
-			class="glyphicon glyphicon-ok-circle"></span> Join</a>
+	<a href="{% url 'group:join' slug=group.slug %}" class="btn px-4 btn-warning">Join</a>
 	{% endif %}
-
-	{% elif user == group.creator %}
-
-	<!-- Button trigger modal -->
-	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-		Create MCQ Test
-	</button>
-	<a type="button" href="{% url 'assignment:create-assignment' slug=group.slug %}" class="btn btn-primary">
-		Create assignment
-	</a>
-	{% endif %}
-
-
-
-
-
-
-
-
 </div>
+
+
+
 
 {% endblock %}
 
@@ -96,7 +101,7 @@
 		<form method="post">
 			{% csrf_token %}
 			{{ postform.as_p}}
-			<input type="submit" class="btn btn-primary " value="Post">
+			<input type="submit" class="btn btn-primary px-4 " value="Post">
 		</form>
 
 		{% if group.groups_posts.count == 0 %}

@@ -7,7 +7,8 @@ class PostForm(forms.ModelForm):
     message = forms.CharField(label='', widget=forms.Textarea(attrs={
         'class': 'form-control',
         'rows': '2',
-        'placeholder': 'Share with your class'
+        'placeholder': 'Share with your class',
+
     }))
 
     class Meta:
