@@ -7,17 +7,18 @@
         "activityBar.inactiveForeground": "#15202b99",
         "activityBarBadge.background": "#06b9a5",
         "activityBarBadge.foreground": "#15202b",
-        "editorGroup.border": "#fbed80",
-        "panel.border": "#fbed80",
-        "sideBar.border": "#fbed80",
         "statusBar.background": "#f7df1e",
         "statusBar.border": "#f7df1e",
         "statusBar.foreground": "#15202b",
         "statusBarItem.hoverBackground": "#dac308",
-        "tab.activeBorder": "#fbed80"
+        "tab.activeBorder": "#fbed80",
+        "sash.hoverBorder": "#fbed80",
+        "statusBarItem.remoteBackground": "#f7df1e",
+        "statusBarItem.remoteForeground": "#15202b"
     },
     "peacock.color": "#f9e64f",
     "python.analysis.extraPaths": [
         "./Manager"
-    ]
+    ],
+    "python.pythonPath": "C:\\Users\\Asus\\Anaconda3\\envs\\env2\\python.exe",
 }

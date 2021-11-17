@@ -55,7 +55,7 @@
 	<div class="list-group">
 		{% for group in object_list %}
 		<a class="list-group-item mt-4" href="{% url 'group:class_single' slug=group.slug %}"
-			style="box-shadow: 1px 1px 3px #888888;">
+			style="box-shadow: 1px 1px 3px #888888;border: 2px rgb(109, 109, 247) solid;">
 			<h3 class="title list-group-item-heading">{{ group.name|title }}</h3>
 			<div class="list-group-item-text container-fluid">
 				{{ group.description_html|safe }}

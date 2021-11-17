@@ -43,17 +43,17 @@ def create_assignment(request, slug):
             form.save()
             aslug = form.instance.slug
             print(form.instance.group.name)
-            add_task_in_post.delay(request.user.username,
-                                   form.instance.id, form.instance.group.id)
+            # add_task_in_post.delay(request.user.username,
+            #                        form.instance.id, form.instance.group.id)
             return redirect('assignment:assignment-detail', slug=aslug)
     context['assignment_form'] = AssignmentForm()
 
     return render(request, "create-assignment.html", context)
 
 
-def assignment_detail(request, slug):
+def assignment_detail(request, assignment_slug):
 
-    assignment = Assignment.objects.filter(slug=slug)[0]
+    assignment = Assignment.objects.filter(slug=assignment_slug)[0]
     responseform = ResponseForm()
     assignmentform = AssignmentFilesForm()
 

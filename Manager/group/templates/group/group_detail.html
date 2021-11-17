@@ -64,6 +64,9 @@
 		</div>
 	</div>
 </div>
+<div class="">
+
+</div>
 {% if user == group.creator %}
 <div class="row justify-content-start my-3">
 	<div class="col-md-2">
@@ -83,7 +86,7 @@
 
 <div class="row my-2">
 
-	{% if not user == group.creator %}
+	{% if not user in group.members.all %}
 	<a href="{% url 'group:join' slug=group.slug %}" class="btn px-4 btn-warning">Join</a>
 	{% endif %}
 </div>
@@ -125,6 +128,23 @@
 			{% for quizes in group.group_quiz.all %}
 			<a href="{% url 'quiz:quiztest' quiz_id=quizes.id group_slug=group.slug %}"
 				class="list-group-item list-group-item-action">{{quizes.quizname}}</a>
+			{% endfor %}
+		</div>
+		{% endif %}
+		{% if group.group_quiz.count == 0 %}
+		<p>No quiz available</p>
+		{% else %}
+		<div class="list-group ">
+			<p style="text-align: center;"><strong> Assignments:</strong></p>
+			{% for assignment in group.group_assignment.all %}
+			
+			
+			<a href="{% url 'assignment:assignment-detail'  assignment_slug=assignment.slug %}"
+				class="list-group-item list-group-item-action">{{assignment.title}}</a>
+				
+			
+				
+				<p>{{assignment.title}}</p>
 			{% endfor %}
 		</div>
 		{% endif %}

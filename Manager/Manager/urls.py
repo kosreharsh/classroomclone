@@ -15,12 +15,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import views
-
 from django.conf import settings
 from django.conf.urls.static import static
 
+from . import views
+from post.api.views import PostViewSet
+from group.api.views import GroupViewSet, GroupMemberViewSet
+
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register(r'post', PostViewSet)
+router.register(r'group', GroupViewSet)
+router.register(r'groupmembers', GroupMemberViewSet)
+
 urlpatterns = [
+    path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
     path('', views.index, name="landing-page"),
     path('', include("group.urls", namespace="group")),
@@ -28,8 +38,9 @@ urlpatterns = [
     path('task/', include("assignment.urls", namespace="assignment")),
     path('post/', include("post.urls", namespace="post")),
     path('todo/', include("todo.urls", namespace="todo")),
-    path('accounts/', include("accounts.urls", namespace="accounts")),
+    path('account/', include("accounts.urls", namespace="accounts")),
     path('accounts/', include("django.contrib.auth.urls")),
+    path('api-auth/', include('rest_framework.urls')),
 ]
 
 if settings.DEBUG:

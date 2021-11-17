@@ -18,7 +18,7 @@ class Post(models.Model):
         Group, related_name="group_posts", null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.message
+        return f'{self.message} of {self.group.name}'
 
     def get_absolute_url(self):
         return reverse(
@@ -41,7 +41,7 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.user.username
+        return f'{self.message} by {self.user.username}'
 
     class Meta:
         ordering = ["-created_at"]

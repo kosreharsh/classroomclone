@@ -3,6 +3,7 @@ from django.conf import settings
 from django.urls import reverse
 from django.db import models
 from django.utils.text import slugify
+
 # from accounts.models import User
 
 
@@ -44,7 +45,7 @@ class GroupMember(models.Model):
         User, related_name='user_groups', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user.username
+        return f'{self.user.username} is a member of {self.group.name}'
 
     class Meta:
         unique_together = ("group", "user")

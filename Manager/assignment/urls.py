@@ -7,7 +7,7 @@ urlpatterns = [
     path('update-assignment/<int:pk>/',
          update_assignment, name='update-assignment'),
     path('create-assignment/<slug>/', create_assignment, name='create-assignment'),
-    path('detail/<slug>/', assignment_detail, name='assignment-detail'),
+    path('detail/<slug:assignment_slug>/', assignment_detail, name='assignment-detail'),
     path('celery/', celery_test, name='celery-test'),
 
 ]

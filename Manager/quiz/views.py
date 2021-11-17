@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, reverse
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 import json
 from .models import *
 from .forms import QuizForm, QuestionForm

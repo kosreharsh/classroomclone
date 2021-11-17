@@ -23,7 +23,8 @@ class Assignment(models.Model):
     task = models.TextField(blank=True, null=True)
     task_created = models.DateTimeField(auto_now=True)
     deadline = models.DateTimeField(blank=True, null=True)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    group = models.ForeignKey(
+        Group, related_name="group_assignment", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.group.name
