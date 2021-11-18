@@ -20,7 +20,8 @@ class QuizTest(models.Model):
 
 
 class UserQuizInfo(models.Model):
-    quiz = models.ForeignKey(QuizTest, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(
+        QuizTest, related_name='quiz_info', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     user_submitted = models.BooleanField(default=False)
     mark = models.PositiveIntegerField(default=0)
@@ -31,7 +32,8 @@ class UserQuizInfo(models.Model):
 
 class Question(models.Model):
     qimage = models.ImageField(blank=True, upload_to='quiz/images/')
-    quiz = models.ForeignKey(QuizTest, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(
+        QuizTest, related_name='quiz_questions', on_delete=models.CASCADE)
     question = models.CharField(max_length=200)
     answer = models.IntegerField()
     option1 = models.CharField(max_length=200)

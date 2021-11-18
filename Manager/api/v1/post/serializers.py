@@ -1,7 +1,7 @@
-from django.db.models import query
+
 from rest_framework import serializers
 from rest_framework.relations import StringRelatedField
-from .models import Post, Comment
+from post.models import Post, Comment
 
 
 class CommentSerializer(serializers.ModelSerializer):
