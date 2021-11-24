@@ -1,5 +1,5 @@
 from rest_framework import viewsets, permissions, status, decorators
-from post.serializers import PostSerializer, CommentSerializer
+from api.v1.post.serializers import PostSerializer, CommentSerializer
 from post.models import Comment, Post
 from group.models import GroupMember, Group
 from rest_framework.decorators import action

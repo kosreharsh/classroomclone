@@ -2,9 +2,9 @@ from rest_framework import viewsets, status, decorators
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from quiz.serializers import UserQuizInfoSerializer, QuestionSerializer, QuizTestSerializer
+from api.v1.quiz.serializers import UserQuizInfoSerializer, QuestionSerializer, QuizTestSerializer
 from quiz.models import UserQuizInfo, QuizTest, Question
-from group.permissions import UserPermission, CreatorPermission
+from api.v1.permissions import UserPermission, CreatorPermission
 
 
 class QuizTestViewSet(viewsets.ModelViewSet):

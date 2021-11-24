@@ -2,11 +2,12 @@ from rest_framework import viewsets, decorators, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from group.serializers import GroupSerializer, GroupMemberSerializer
-from post.serializers import PostSerializer
-from quiz.serializers import QuizTestSerializer
+from .serializers import GroupSerializer, GroupMemberSerializer
+from api.v1.post.serializers import PostSerializer
+from api.v1.quiz.serializers import QuizTestSerializer
+from api.v1.assignment.serializers import AssignmentSerializer, AssignmentFilesSerializer
 
-from group.permissions import UserPermission, CreatorPermission
+from api.v1.permissions import UserPermission, CreatorPermission
 
 from group.models import Group, GroupMember
 from django.db.models import Q
@@ -43,6 +44,30 @@ class GroupViewSet(viewsets.ModelViewSet):
             group = self.get_object()
             serializer.save(group=group)
             return Response({"msg": "Quiz is created"}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"msg": "data is not valid"}, status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=['post'])
+    @decorators.permission_classes([CreatorPermission])
+    def add_assignment(self, request, pk=None):
+        data = request.data
+        serializer = AssignmentSerializer(data=data)
+        if serializer.is_valid():
+            group = self.get_object()
+            serializer.save(group=group)
+            return Response({"msg": "Assignment is created"}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"msg": "data is not valid"}, status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=['post'])
+    @decorators.permission_classes([CreatorPermission])
+    def add_assignmentfiles(self, request, pk=None):
+        data = request.data
+        serializer = AssignmentFilesSerializer(data=data)
+        if serializer.is_valid():
+            group = self.get_object()
+            serializer.save(group=group)
+            return Response({"msg": "Assignment Files is added"}, status=status.HTTP_201_CREATED)
         else:
             return Response({"msg": "data is not valid"}, status.HTTP_400_BAD_REQUEST)
 
