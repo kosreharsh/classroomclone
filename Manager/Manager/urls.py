@@ -17,20 +17,19 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 from . import views
-from post.api.views import PostViewSet
-from group.api.views import GroupViewSet, GroupMemberViewSet
 
-from rest_framework.routers import DefaultRouter
-
-router = DefaultRouter()
-router.register(r'post', PostViewSet)
-router.register(r'group', GroupViewSet)
-router.register(r'groupmembers', GroupMemberViewSet)
 
 urlpatterns = [
-    path('api/', include(router.urls)),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/v1/', include("api.v1.urls")),
+    path('jet/', include('jet.urls', 'jet')),
     path('admin/', admin.site.urls),
     path('', views.index, name="landing-page"),
     path('', include("group.urls", namespace="group")),

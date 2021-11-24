@@ -1,5 +1,5 @@
 from rest_framework import viewsets, permissions, status, decorators
-from post.serializer import PostSerializer, CommentSerializer
+from api.v1.post.serializers import PostSerializer, CommentSerializer
 from post.models import Comment, Post
 from group.models import GroupMember, Group
 from rest_framework.decorators import action
@@ -25,12 +25,14 @@ class PostViewSet(viewsets.ModelViewSet):
     @decorators.permission_classes([UserPermission])
     def addcomments(self, request):
         data = request.data
-        comment = CommentSerializer(data=data)
-        obj = self.get_object()
-        comment.post = obj
-        comment.user = self.request.user
-        comment.save()
-        return Response({"msg": "comment is added"}, status=status.HTTP_201_CREATED)
+        serializer = CommentSerializer(data=data)
+        if serializer.is_valid():
+            user = self.request.user
+            post = self.get_object()
+            serializer.save(user=user, post=post)
+            return Response({"msg": "comment is added"}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"msg": "data is not valid"}, status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=['delete'])
     def deletecomment(self, request):
