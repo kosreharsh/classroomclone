@@ -1,9 +1,13 @@
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+
 from django.db import models
 from django.db.models.fields import related
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from group.models import Group
 from django.utils.text import slugify
+# from todo.tasks import update_task_to_group_members
 user = get_user_model()
 
 # Create your models here.
@@ -61,3 +65,9 @@ class ResponseFiles(models.Model):
 
     def __str__(self):
         return self.response.student.username
+
+
+# @receiver(post_save, sender=Assignment)
+# def assignment_to_post(sender, instance, **kwargs):
+#     update_task_to_group_members.delay(
+#         assignment_id=instance.id, group_id=instance.group.id)

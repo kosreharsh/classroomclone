@@ -4,16 +4,9 @@ from post.models import Comment, Post
 from group.models import GroupMember, Group
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
-
-class UserPermission(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
-        user = request.user
-        queryset = GroupMember.objects.filter(group=obj.group)
-        for object in queryset:
-            if user == object.user:
-                return True
-        return False
+import io
+from rest_framework.parsers import JSONParser
+from api.v1.permissions import UserPermission
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -24,7 +17,8 @@ class PostViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     @decorators.permission_classes([UserPermission])
     def addcomments(self, request):
-        data = request.data
+        stream = io.BytesIO(request.data)
+        data = JSONParser().parse(stream)
         serializer = CommentSerializer(data=data)
         if serializer.is_valid():
             user = self.request.user
