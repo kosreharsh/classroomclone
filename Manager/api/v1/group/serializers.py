@@ -32,14 +32,9 @@ class GroupMemberSerializer(serializers.ModelSerializer):
 
 class GroupSerializer(serializers.ModelSerializer):
     creator = UsernameField(read_only=True)
-    post_list = serializers.SerializerMethodField(required=False)
     slug = serializers.SlugField(read_only=True)
+    code = serializers.CharField(read_only=True)
 
     class Meta:
         model = Group
         fields = '__all__'
-
-    def get_post_list(self, obj):
-        data = obj.group_posts.all().order_by('-created_at')
-        list = PostSerializer(data, many=True)
-        return list.data

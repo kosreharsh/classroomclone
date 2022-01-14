@@ -6,6 +6,9 @@ from api.v1.quiz.serializers import UserQuizInfoSerializer, QuestionSerializer, 
 from quiz.models import UserQuizInfo, QuizTest, Question
 from api.v1.permissions import UserPermission, CreatorPermission
 
+from rest_framework.parsers import JSONParser
+import io
+
 
 class QuizTestViewSet(viewsets.ModelViewSet):
     queryset = QuizTest.objects.all()
@@ -14,7 +17,8 @@ class QuizTestViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     @decorators.permission_classes([CreatorPermission])
     def createQuestion(self, request, pk=None):
-        data = request.data
+        stream = io.BytesIO(request.data)
+        data = JSONParser().parse(stream)
         serializer = QuestionSerializer(data=data)
         if serializer.is_valid():
             quiz = self.get_object()
@@ -42,7 +46,7 @@ class QuizTestViewSet(viewsets.ModelViewSet):
 
 class UserQuizInfoViewSet(viewsets.ModelViewSet):
     queryset = UserQuizInfo.objects.all()
-    serialier_class = UserQuizInfoSerializer
+    serializer_class = UserQuizInfoSerializer
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
