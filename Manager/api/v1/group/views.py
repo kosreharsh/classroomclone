@@ -36,7 +36,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['get'])
     def get_quiz_list(self, request, pk=None):
         obj = self.get_object()
-        data = obj.group_quiz.all().order_by('-created_at')
+        data = obj.group_quiz.all()
         list = QuizTestSerializer(data, many=True)
         return Response(list.data)
 
