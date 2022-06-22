@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
+    'channels',
     'group',
     'accounts',
     'post',
@@ -82,6 +83,7 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = "Manager.asgi.application"
 WSGI_APPLICATION = 'Manager.wsgi.application'
 
 
@@ -98,6 +100,9 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+CHANNEL_LAYERS = {"default": {
+    "BACKEND": "channels.layers.InMemoryChannelLayer"}}
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
