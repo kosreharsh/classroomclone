@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import AssignmentForm, ResponseForm, AssignmentFilesForm
 from group.models import Group
-from assignment.tasks import test
+# from assignment.tasks import test
 # Create your views here.
 
 

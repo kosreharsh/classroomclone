@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from assignment.tasks import add_assignment_in_post
+# from assignment.tasks import add_assignment_in_post
 
 from .serializers import GroupSerializer, GroupMemberSerializer
 from api.v1.post.serializers import PostSerializer
