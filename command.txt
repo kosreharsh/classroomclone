@@ -14,13 +14,18 @@ Build the new image and spin up the two containers:
 
 $ docker-compose up -d --build
 
-Run the migrations:
 
+after the containers spin up, Run the migrations:
+
+$ docker-compose exec web python manage.py flush --no-input
 $ docker-compose exec web python manage.py migrate --noinput
 
 Ensure the default Django tables were created:
 
-$ docker-compose exec db psql --username=hello_django --dbname=hello_django_dev
+$ docker-compose exec db psql --username=postgres --dbname=Assignment_Manager
+
+docker-compose -f docker-compose.prod.yml exec db psql --username=postgres --dbname=Assignment_Manager
+
 
 
 hello_django_dev=# \L 
@@ -56,3 +61,24 @@ You should see something similar to:
         "Scope": "local"
     }
 ]--------
+
+
+#https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/
+
+
+
+1. For Build & Run the container with prod docker file
+docker-compose -f docker-compose.prod.yml up -d --build
+
+2. For creating db on postgress
+docker-compose -f docker-compose.prod.yml exec db psql --user
+name=postgres --dbname=Assignment_Manager
+
+3. For running the migrations
+docker-compose -f docker-compose.prod.yml exec web python man
+age.py migrate --noinput
+
+4. For creating superuser
+docker-compose -f docker-compose.prod.yml exec web python man
+age.py createsuperuser
+
